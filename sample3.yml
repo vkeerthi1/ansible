@@ -1,0 +1,28 @@
+---
+- name: install appache
+  hosts: test-servers
+  become: true
+  
+  handlers:
+   - name: restart pache
+     service:
+       name: httpd
+       state: restarted
+  tasks:	
+   - name: "install apache2"
+     yum: name=httpd state=present
+     ignore_errors:true
+   - name: "install apache2-"
+     service : 
+       name:httpd
+       state:started
+       enabled:true
+     tags:
+        - echo
+        - api
+   - name: "copy file"
+     copy: 
+       src:/home/edu/index.html 
+       dest: /var/www/html/index.html
+     notify: restart apache
+---

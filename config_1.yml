@@ -1,0 +1,30 @@
+>ssh-keygen
+>sudo nano /etc/anisble/hosts
+>ssh-copy-id -i knode
+
+
+anisble -m ping test-servers
+
+
+create a playbook
+
+---
+- hosts : test-servers
+  become: true
+  vars:
+    anisble_beome_pass: edureka
+  tasks :	
+    - name : install nginx
+	  package : pkg=nginx state=installed
+	  
+	  notify:
+	   - start nginx
+	   
+  handlers :
+   - name : start nginx
+     servers : name=nginx state=started
+	 
+---
+	 
+anisble-playbook file.yml
+

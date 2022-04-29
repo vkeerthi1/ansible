@@ -1,0 +1,64 @@
+---
+- name: install appache and php and mysql
+  hosts: test-servers
+  become: true
+  become_user: root
+  gather_facts: true
+  tasks:	
+   - name : "install apache2"
+     package : name=apache2 state=present
+   - name : "install apache2-php5"
+     package : name=libapache2-mod-php state=present
+   - name : "install mysqlserver"
+     package : name=mysql-server state=present
+---
+
+
+---
+- name: install appache and php and mysql
+  hosts: all
+  remote_user: root
+  tasks:	
+   - name : "install pip"
+     apt : name=python-pip state=present
+   - name : "install py mySQL module"
+     pip : name=MySQL-python
+   - name : Create database user edureka
+     mysql_user : user=edu password=edu priv=*.*:ALL state=present
+   - name : Create database edureka
+     mysql_db : db=edur state present
+   - name : Create a table
+     command : mysql -u edu -pedu -e 'CREATE TABLE reg(name varchar(30),email varchar(30))' edur
+---
+
+
+---
+- name: copy
+  hosts: test-servers
+  become: true
+  become_user: root
+  gather_facts: true
+  tasks:	
+   - name : "copy file"
+     copy : src=/home/edu/index.html 
+     dest: /var/www/html/index.html
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
